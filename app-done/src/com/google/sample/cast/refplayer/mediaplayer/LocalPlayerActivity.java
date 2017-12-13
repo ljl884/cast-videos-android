@@ -24,6 +24,7 @@ import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.SessionManagerListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
+import com.google.sample.cast.refplayer.MessageSender;
 import com.google.sample.cast.refplayer.R;
 import com.google.sample.cast.refplayer.expandedcontrols.ExpandedControlsActivity;
 import com.google.sample.cast.refplayer.settings.CastPreference;
@@ -225,6 +226,7 @@ public class LocalPlayerActivity extends AppCompatActivity {
                 }
                 updatePlayButton(mPlaybackState);
                 invalidateOptionsMenu();
+                MessageSender.sendInitMessage(castSession);
             }
 
             private void onApplicationDisconnected() {
@@ -757,14 +759,16 @@ public class LocalPlayerActivity extends AppCompatActivity {
     }
 
     private MediaInfo buildMediaInfo() {
+        String contentId = "ref:TWAL01-006";
         MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
 
         movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, mSelectedMedia.getStudio());
         movieMetadata.putString(MediaMetadata.KEY_TITLE, mSelectedMedia.getTitle());
+        movieMetadata.putString("videoId", contentId);
         movieMetadata.addImage(new WebImage(Uri.parse(mSelectedMedia.getImage(0))));
         movieMetadata.addImage(new WebImage(Uri.parse(mSelectedMedia.getImage(1))));
 
-        return new MediaInfo.Builder(mSelectedMedia.getUrl())
+        return new MediaInfo.Builder(contentId)
                 .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
                 .setContentType("videos/mp4")
                 .setMetadata(movieMetadata)
