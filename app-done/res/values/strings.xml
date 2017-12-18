@@ -18,7 +18,7 @@
 
     <string name="app_name">Cast Videos</string>
     <!--Replace this app_id with Brightcove Receiver id-->
-    <string name="app_id">BA7E6F0A</string>
+    <string name="app_id">4F8B3483</string>
     <string name="action_settings">Settings</string>
     <string name="cast_app_name">GoogleCastPlayer</string>
     <string name="media_route_menu_title">Play on&#8230;</string>

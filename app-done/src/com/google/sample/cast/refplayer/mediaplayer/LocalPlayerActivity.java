@@ -16,23 +16,6 @@
 
 package com.google.sample.cast.refplayer.mediaplayer;
 
-import com.google.android.gms.cast.MediaInfo;
-import com.google.android.gms.cast.MediaMetadata;
-import com.google.android.gms.cast.framework.CastButtonFactory;
-import com.google.android.gms.cast.framework.CastContext;
-import com.google.android.gms.cast.framework.CastSession;
-import com.google.android.gms.cast.framework.SessionManagerListener;
-import com.google.android.gms.cast.framework.media.RemoteMediaClient;
-import com.google.android.gms.common.images.WebImage;
-import com.google.sample.cast.refplayer.MessageSender;
-import com.google.sample.cast.refplayer.R;
-import com.google.sample.cast.refplayer.expandedcontrols.ExpandedControlsActivity;
-import com.google.sample.cast.refplayer.settings.CastPreference;
-import com.google.sample.cast.refplayer.utils.MediaItem;
-import com.google.sample.cast.refplayer.utils.Utils;
-
-import com.androidquery.AQuery;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -66,6 +49,22 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import com.androidquery.AQuery;
+import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaMetadata;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.cast.framework.CastSession;
+import com.google.android.gms.cast.framework.SessionManagerListener;
+import com.google.android.gms.cast.framework.media.RemoteMediaClient;
+import com.google.android.gms.common.images.WebImage;
+import com.google.sample.cast.refplayer.MessageSender;
+import com.google.sample.cast.refplayer.R;
+import com.google.sample.cast.refplayer.expandedcontrols.ExpandedControlsActivity;
+import com.google.sample.cast.refplayer.settings.CastPreference;
+import com.google.sample.cast.refplayer.utils.MediaItem;
+import com.google.sample.cast.refplayer.utils.Utils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -759,17 +758,18 @@ public class LocalPlayerActivity extends AppCompatActivity {
     }
 
     private MediaInfo buildMediaInfo() {
-        String contentId = "ref:TWAL01-006";
+        String contentId = "https://csm-e.tls1.yospace.com/csm/extlive/sevenprd01,MEL2.m3u8?appId=7plus&deviceType=ios&platformType=app&ppId=00000000-0000-0000-0000-000000000000&videoType=live&vid=5652239842001&yo.ad=true&yo.br=true&yo.ac=true";
+        String videoServiceURL = "https://videoservice-uat.inferno.digital/playback?appId=7plus&deviceType=ios&platformType=app&ppId=00000000-0000-0000-0000-000000000000&accountId=5650355166001&referenceId=ref:5&deliveryId=ssaisdk&videoType=live";
         MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
 
         movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, mSelectedMedia.getStudio());
         movieMetadata.putString(MediaMetadata.KEY_TITLE, mSelectedMedia.getTitle());
-        movieMetadata.putString("videoId", contentId);
+        movieMetadata.putString("videoServiceURL", videoServiceURL);
         movieMetadata.addImage(new WebImage(Uri.parse(mSelectedMedia.getImage(0))));
         movieMetadata.addImage(new WebImage(Uri.parse(mSelectedMedia.getImage(1))));
 
         return new MediaInfo.Builder(contentId)
-                .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
+                .setStreamType(MediaInfo.STREAM_TYPE_LIVE)
                 .setContentType("videos/mp4")
                 .setMetadata(movieMetadata)
                 .setStreamDuration(mSelectedMedia.getDuration() * 1000)
